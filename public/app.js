@@ -98,13 +98,16 @@ function fillProgressBar(percent){
     } else {
         initialPercent = parseInt(progressBar.style.width.replace('%',''), 10)
     }
+
     for( let i = 0; i <= percent; i++) {
-        console.log('i',i)
-        progressBar.style.width = initialPercent + i + '%';
-        if( i === 100){
-            return;
-        }
+        let currentPercent =  initialPercent + i + '%';
+        progressBar.style.width = currentPercent;
+        progressBar.innerHTML = currentPercent;
     }
+}
+
+function resetProgressBar() {
+    progressBar.style.width = '0%';
 }
 
 /* ---  END Aux functions for UI --- */
@@ -116,34 +119,28 @@ async function createNewEntry(){
     try {
         const userZipInput = zipcode.value.trim();
         const userFeelingsInput = feelings.value;
-        console.log(zipcode.value);
-        console.log(feelings.value);
-    
+
         // get latitude and longitude
         const geocodingResponse = await getLatitudLongitude(userZipInput, geocodingUrl, apikey);
-        console.log(geocodingResponse);
         const {lat, lon} = geocodingResponse;
     
         // get weaether for current latitude and longitude
         const weatherResposne = await getWeatherForCurrentLocation(lat, lon, curWeatherBaseurl, apikey);
-        console.log(weatherResposne);
         const {temp} = weatherResposne.main;
     
         // construct data object
-        const entryData = {
+        const newEntryData = {
             temperature: temp,
             date: new Date().toLocaleString(),
             userResponse: userFeelingsInput,
         }
-        console.log(entryData);
 
         //add entry
-        const added = await addNewEntry(serverAddEndpoint, entryData);
-        console.log('added', added)
-
+        await addNewEntry(serverAddEndpoint, newEntryData);
 
     } catch (error) {
         console.log('Error!:', error)
+        //todo handle error
     }
     
 }
@@ -151,6 +148,7 @@ async function createNewEntry(){
 async function addNewEntry(url, data) {
     const res = await fetch(url, {
         method: 'POST',
+        credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -160,7 +158,7 @@ async function addNewEntry(url, data) {
     try {
         console.log('res',res);
         // const {ok} = res;
-        return res;
+        return;
     } catch (error) {
         console.log('error',error);
         //TODO handle error
@@ -172,7 +170,6 @@ async function getEntryData(url) {
 
     try {
         const data = await res.json();
-        console.log(data);
         return data;
     } catch (error) {
         console.log('error',error);
@@ -250,17 +247,21 @@ function addEventListeners(){
     generate.addEventListener('click', async () => {
         //add processing element
         fillProgressBar(25);
-        await createNewEntry().then(
-            fillProgressBar(25)
-        );
-        //clear inputs
-        resetInputs();
-        fillProgressBar(25);
+
+        //create entry in backend
+        await createNewEntry().then( () => {
+            fillProgressBar(25);
+            //clear inputs
+            resetInputs();
+        });
+        
         //get entry
-        const oldEntryData = await getEntryData(serverGetEndpoint);
-        console.log('oldEntry', oldEntryData);
+        const oldEntryData = await getEntryData(serverGetEndpoint).then(fillProgressBar(25));
         //update ui
-        const cratedRecentEntry = await createRecentEntry(oldEntryData);
+        await createRecentEntry(oldEntryData).then(() => {
+            fillProgressBar(25);
+            setTimeout(resetProgressBar, 3000)
+        });
     });
 }
 
