@@ -16,9 +16,47 @@ const serverGetEndpoint = 'http://localhost:3000/data';
 const zipcode = document.getElementById('zip');
 const feelings = document.getElementById('feelings');
 const generate = document.getElementById('generate');
+const progressBar = document.querySelector('.fill__bar');
+const recentEntry = {
+    date: document.getElementById('date'),
+    temp: document.getElementById('temp'),
+    content: document.getElementById('content'),
+}
 
 
-/* --- Aux functions for validation --- */
+/* --- Aux functions for input validation --- */
+
+const isEmptyField = (elementValue) => {
+    if ( !elementValue || elementValue.trim().length === 0 ) {
+        return true;
+    }
+    return false;
+}
+
+function validZipcode() {
+    const userZipInput = zipcode.value.trim();
+    const spainZipRegex = /\b(0[1-9]|5[0-2]|[0-4][0-9])[0-9]{3}\b/;
+    const validSpainZip = spainZipRegex.test(userZipInput);
+
+    if ( isEmptyField(userZipInput) || !validSpainZip ) {
+        return false;
+    }
+    return true;
+
+}
+
+function validFeelings() {
+    const userFeelingsInput = feelings.value;
+
+    if(isEmptyField(userFeelingsInput)) {
+        return false;
+    }
+    return true;
+}
+
+/* ---  END Aux functions for input validation --- */
+
+/* ---  Aux functions for UI --- */
 function addAlertInvalidField(element) {
     if (element.id === 'zip') {
         const zipHint = document.querySelector('.zip__hint');
@@ -32,48 +70,52 @@ function removeAlertInvalidField(element) {
         const zipHint = document.querySelector('.zip__hint');
         zipHint.style.display = 'none'
     }
-    element.classList.remove('field__error')
+    element.classList.remove('field__error');
 }
 
-const isEmptyField = (elementValue) => {
-    if ( !elementValue || elementValue.trim().length === 0 ) {
-        console.log('novalue');
-        return true;
+function checkEnableButton() {
+    if ( validFeelings() && validZipcode() ){
+        generate.removeAttribute('disabled');
+        return;
     }
-    return false;
+    generate.setAttribute('disabled', '');
 }
 
-function validZipcode() {
-    const userZipInput = zipcode.value;
-    const spainZipRegex = /\b(0[1-9]|5[0-2]|[0-4][0-9])[0-9]{3}\b/;
-    const validSpainZip = spainZipRegex.test(userZipInput);
-    console.log('userZipInput', userZipInput)
+function resetInputs() {
+    feelings.value = '';
+    removeAlertInvalidField(feelings);
 
-    if ( isEmptyField(userZipInput) || !validSpainZip ) {
-        addAlertInvalidField(zipcode);
-        return false;
+    zipcode.value = '';
+    removeAlertInvalidField(zipcode);
+    
+    checkEnableButton();
+}
+
+function fillProgressBar(percent){
+    let initialPercent;
+    if (progressBar.style.width === "") {
+        initialPercent = 0;
+    } else {
+        initialPercent = parseInt(progressBar.style.width.replace('%',''), 10)
     }
-    return validSpainZip;
-
-}
-
-function validFeelings() {
-    const userFeelingsInput = feelings.value;
-
-    if(isEmptyField(userFeelingsInput)) {
-        addAlertInvalidField(feelings);
-        return false;
+    for( let i = 0; i <= percent; i++) {
+        console.log('i',i)
+        progressBar.style.width = initialPercent + i + '%';
+        if( i === 100){
+            return;
+        }
     }
-    return true;
 }
-/* ---  END Aux functions for validation --- */
+
+/* ---  END Aux functions for UI --- */
 
 
 /* --- Main functions --- */
+// gets info from api and posts to server
 async function createNewEntry(){
     try {
-        const userZipInput = zipcode.value;
-        const userFeelingsInput = feelings.value
+        const userZipInput = zipcode.value.trim();
+        const userFeelingsInput = feelings.value;
         console.log(zipcode.value);
         console.log(feelings.value);
     
@@ -90,7 +132,7 @@ async function createNewEntry(){
         // construct data object
         const entryData = {
             temperature: temp,
-            date: new Date().toString(),
+            date: new Date().toLocaleString(),
             userResponse: userFeelingsInput,
         }
         console.log(entryData);
@@ -98,11 +140,7 @@ async function createNewEntry(){
         //add entry
         const added = await addNewEntry(serverAddEndpoint, entryData);
         console.log('added', added)
-        //get entry
-        const oldEntryData = await getEntryData(serverGetEndpoint);
-        console.log('oldEntry', oldEntryData);
-        //update ui
-        const cratedRecentEntry = await createRecentEntry(oldEntryData);
+
 
     } catch (error) {
         console.log('Error!:', error)
@@ -143,7 +181,13 @@ async function getEntryData(url) {
 }
 
 async function createRecentEntry(entryData) {
-    //todo
+    const {temperature, date, userResponse} = entryData;
+    const {date: entryDate, temp, content} = recentEntry;
+
+    entryDate.innerHTML = `<span><b>Entry date:</b> ${date}</span>`;
+    temp.innerHTML = `<span><b>Temperature(ºC):</b> ${temperature}</span>`;
+    content.innerHTML = `<span><b>Feelings:</b> ${userResponse}</span>`;
+
 }
 
 async function getLatitudLongitude(zipValue, url, key) {
@@ -173,7 +217,7 @@ async function getWeatherForCurrentLocation (lat, lon, url, key) {
         //TODO handle error
     }
 }
-
+/* --- END Main functions --- */
 
 
 /* --- EVENT LISTENERS --- */
@@ -184,9 +228,11 @@ function addEventListeners(){
 
         if(validatedZipcode) {
             removeAlertInvalidField(zipcode);
+            checkEnableButton();
+            return;
         };
 
-        console.log('inside event listener zipcode:', validatedZipcode);
+        addAlertInvalidField(zipcode);
     });
 
     feelings.addEventListener('input', () => {
@@ -194,17 +240,30 @@ function addEventListeners(){
 
         if(validatedFeelings) {
             removeAlertInvalidField(feelings);
+            checkEnableButton();
+            return;
         }
 
-        console.log('inside event listener feelings:', validatedFeelings);
-
+        addAlertInvalidField(feelings);
     })
 
-    generate.addEventListener('click', createNewEntry);
+    generate.addEventListener('click', async () => {
+        //add processing element
+        fillProgressBar(25);
+        await createNewEntry().then(
+            fillProgressBar(25)
+        );
+        //clear inputs
+        resetInputs();
+        fillProgressBar(25);
+        //get entry
+        const oldEntryData = await getEntryData(serverGetEndpoint);
+        console.log('oldEntry', oldEntryData);
+        //update ui
+        const cratedRecentEntry = await createRecentEntry(oldEntryData);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', addEventListeners());
 
-
-
-
+/* --- END EVENT LISTENERS --- */
