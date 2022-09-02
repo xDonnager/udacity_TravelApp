@@ -109,7 +109,6 @@ function resetProgressBar() {
 }
 
 function handleError(error) {
-  console.log("Error!:", error);
   const fragment = document.createDocumentFragment();
   const divError = document.createElement("div");
 
@@ -252,13 +251,11 @@ function addEventListeners() {
 
   generate.addEventListener("click", () => {
     //add progress bar
-    console.log("add progress", performance.now());
     fillProgressBar(25);
 
     //create entry in backend
     createNewEntry()
       .then(() => {
-        console.log("created entry", performance.now());
         fillProgressBar(25);
         //clear inputs
         resetInputs();
@@ -266,11 +263,9 @@ function addEventListeners() {
       })
       .then( result => {
         fillProgressBar(25);
-        console.log(result);
         return createRecentEntry(result);
       })
       .then(() => {
-        console.log("created recent entry", performance.now());
         fillProgressBar(25);
         setTimeout(resetProgressBar, 3000);
       })
