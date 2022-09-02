@@ -21,7 +21,7 @@ app.use(cors());
 //public dir
 app.use(express.static('public'));
 
-//serve index.html
+//serve webapplication frontend
 app.get('/', (req, res) => {
     console.log(req);
     res.sendFile(path.join(__dirname, '/public/index.html'));
