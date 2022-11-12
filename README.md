@@ -1,7 +1,7 @@
 <!-- Add banner here -->
 
-# Weather Journal App Project
-This is the third project for the Udacity frontend web development nanodegree.
+# Travel App Project
+This is the last project for the Udacity frontend web development nanodegree.
 It is a web app that comunicates with a nodejs backend server (uses express).
 The backend has 2 endpoints:
 1 - GET data -- /data
