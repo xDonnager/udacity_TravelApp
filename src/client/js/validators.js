@@ -1,7 +1,7 @@
 /* --- Aux functions for input validation --- */
 
-const isEmptyField = (elementValue) => {
-  if (!elementValue || elementValue.trim().length === 0) {
+export const isEmptyField = (element) => {
+  if (!element.value || element.value.trim().length === 0) {
     return true;
   }
   return false;
@@ -27,6 +27,5 @@ function validFeelings() {
   return true;
 }
 
-export { validZipcode, validFeelings };
 
 /* ---  END Aux functions for input validation --- */

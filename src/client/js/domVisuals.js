@@ -1,9 +1,5 @@
 /* ---  Aux functions for UI --- */
-function addAlertInvalidField(element) {
-  if (element.id === "zip") {
-    const zipHint = document.querySelector(".zip__hint");
-    zipHint.style.display = "block";
-  }
+export function addAlertInvalidField(element) {
   element.classList.add("field__error");
 }
 
@@ -16,47 +12,47 @@ function removeAlertInvalidField(element) {
 }
 
 function checkEnableButton() {
-  if (Client.validFeelings() && Client.validZipcode()) {
-    Client.generate.removeAttribute("disabled");
+  if (validFeelings() && validZipcode()) {
+    generate.removeAttribute("disabled");
     return;
   }
-  Client.generate.setAttribute("disabled", "");
+  generate.setAttribute("disabled", "");
 }
 
 function resetInputs() {
-  Client.feelings.value = "";
-  Client.removeAlertInvalidField(feelings);
+  feelings.value = "";
+  removeAlertInvalidField(feelings);
 
-  Client.zipcode.value = "";
-  Client. removeAlertInvalidField(zipcode);
+  zipcode.value = "";
+   removeAlertInvalidField(zipcode);
 
-  Client.checkEnableButton();
+  checkEnableButton();
 }
 
 function fillProgressBar(percent) {
   let initialPercent;
-  if (Client.progressBar.style.width === "") {
+  if (progressBar.style.width === "") {
     initialPercent = 0;
   } else {
     initialPercent = parseInt(
-      Client.progressBar.style.width.replace("%", ""),
+      progressBar.style.width.replace("%", ""),
       10
     );
   }
 
   for (let i = 0; i <= percent; i++) {
     let currentPercent = initialPercent + i + "%";
-    Client.progressBar.style.width = currentPercent;
-    Client.progressBar.innerHTML = currentPercent;
+    progressBar.style.width = currentPercent;
+    progressBar.innerHTML = currentPercent;
   }
 }
 
 function resetProgressBar() {
-  Client.progressBar.style.width = "0%";
-  Client.progressBar.innerHTML = "";
+  progressBar.style.width = "0%";
+  progressBar.innerHTML = "";
 }
 
-function handleError(error) {
+export function handleError(error) {
   const fragment = document.createDocumentFragment();
   const divError = document.createElement("div");
 
@@ -68,12 +64,3 @@ function handleError(error) {
   document.querySelector(".progress__bar").appendChild(fragment);
 }
 /* ---  END Aux functions for UI --- */
-export {
-  addAlertInvalidField,
-  removeAlertInvalidField,
-  checkEnableButton,
-  resetInputs,
-  fillProgressBar,
-  resetProgressBar,
-  handleError,
-};

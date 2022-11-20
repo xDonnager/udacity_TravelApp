@@ -5,10 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "",
-    "dev": "webpack-dev-server  --config webpack.dev.js --open & node ./src/server.js",
+    "dev": "webpack-dev-server  --config webpack.dev.js --open",
     "start": "node ./src/server.js",
     "build": "webpack --config webpack.prod.js"
-
   },
   "keywords": [],
   "author": "Paula Xicoy",
@@ -17,6 +16,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
+    "node-fetch": "^2.6.0",
     "webpack": "^4.46.0",
     "webpack-cli": "^3.3.5"
   },

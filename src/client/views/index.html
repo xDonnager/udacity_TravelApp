@@ -3,36 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <title>Weather Journal</title>
+    <title>Planify</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css?family=Oswald:400,600,700|Ranga:400,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="app.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
+    <header>
+      <div class="holder headline">Planify</div>
+    </header>
     <div id="app">
-      <div class="holder headline">Weather Journal App</div>
-      <div class="holder zip">
-        <label for="zip">Enter Zipcode here</label>
-        <input type="text" id="zip" placeholder="enter zip code here" />
-        <span class="zip__hint"><em>Zipcode must be a valid number for Spain</em></span>
-      </div>
-      <div class="holder feel">
-        <label for="feelings">How are you feeling today?</label>
-        <textarea
-          id="feelings"
-          placeholder="Enter your feelings here"
-          rows="9"
-          cols="10"
-        ></textarea>
-        <button id="generate" type="submit" disabled>Generate</button>
-      </div>
-      <div class="progress__bar">
-        <div class="fill__bar"></div>
-      </div> 
-      <div class="holder entry">
-        <div class="title">Most Recent Entry</div>
+      <section id="form">
+        <div class="holder country">
+          <label for="destination">¿Where you'd like to go?</label>
+          <input type="text" id="destination" placeholder="Country" />
+        </div>
+        <div class="holder city">
+          <label for="city">¿Which city?</label>
+          <input type="text" id="city" placeholder="City" />
+        </div>
+        <div class="holder date">
+          <label for="date">¿When?</label>
+          <input type="date" id="date" placeholder="" />
+        </div>
+        <div class="holder generate__btn">
+          <button id="generate" type="submit">Planify</button>
+        </div>
+        <div class="progress__bar">
+          <div class="fill__bar"></div>
+        </div>
+      </section>
+
+      <section class="countdown">
+        <div class="title">
+          Leaving in
+          <span id="daysLeft">...</span>
+          days...
+        </div>
+      </section>
+
+      <div class="holder trips__list">
+        <div class="title">My Saved trips</div>
         <div id="entryHolder">
           <div id="date"></div>
           <div id="temp"></div>
@@ -40,8 +58,5 @@
         </div>
       </div>
     </div>
-    <!-- <script>
-      document.addEventListener("DOMContentLoaded", Client.addEventListeners());
-    </script> -->
   </body>
 </html>

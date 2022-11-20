@@ -1,48 +1,48 @@
 /* --- EVENT LISTENERS --- */
 
 function addEventListeners() {
-  Client.zipcode.addEventListener("input", () => {
-    const validatedZipcode = Client.validZipcode();
+  zipcode.addEventListener("input", () => {
+    const validatedZipcode = validZipcode();
 
     if (validatedZipcode) {
-      Client.removeAlertInvalidField(Client.zipcode);
-      Client.checkEnableButton();
+      removeAlertInvalidField(zipcode);
+      checkEnableButton();
       return;
     }
 
-    Client.addAlertInvalidField(Client.zipcode);
+    addAlertInvalidField(zipcode);
   });
 
-  Client.feelings.addEventListener("input", () => {
-    const validatedFeelings = Client.validFeelings();
+  feelings.addEventListener("input", () => {
+    const validatedFeelings = validFeelings();
 
     if (validatedFeelings) {
-      Client.removeAlertInvalidField(Client.feelings);
-      Client.checkEnableButton();
+      removeAlertInvalidField(feelings);
+      checkEnableButton();
       return;
     }
 
-    Client.addAlertInvalidField(Client.feelings);
+    addAlertInvalidField(feelings);
   });
 
-  Client.generate.addEventListener("click", () => {
+  generate.addEventListener("click", () => {
     //add progress bar
-    Client.fillProgressBar(25);
+    fillProgressBar(25);
 
     //create entry in backend
-    Client.createNewEntry()
+    createNewEntry()
       .then(() => {
-        Client.fillProgressBar(25);
+        fillProgressBar(25);
         //clear inputs
-        Client.resetInputs();
+        resetInputs();
         return getEntryData(serverGetEndpoint);
       })
       .then((result) => {
-        Client.fillProgressBar(25);
-        return Client.createRecentEntry(result);
+        fillProgressBar(25);
+        return createRecentEntry(result);
       })
       .then(() => {
-        Client.fillProgressBar(25);
+        fillProgressBar(25);
         setTimeout(resetProgressBar, 3000);
       })
       .catch((error) => console.log(error));
