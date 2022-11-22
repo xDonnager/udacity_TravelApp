@@ -30,7 +30,7 @@ const getCoordinates = async (req) => {
     };
   } catch (e) {
     console.log(e);
-    return null;
+    throw e;
   }
 };
 
