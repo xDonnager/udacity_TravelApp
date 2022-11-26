@@ -5,12 +5,11 @@ const getCountryData = async (country) => {
   const url = `https://restcountries.com/v3.1/name/${country}`;
   try {
     const res = await fetch(url);
-    console.log("---------", res);
     if (res.status !== 200) {
       throw new Error("Response error from restcountries");
     }
     const data = await res.json();
-    console.log("---------", data);
+    // console.log("---------", data);
     if (data.length === 0 || data === undefined) {
       throw new Error("Country was not found in restCountries");
     }
@@ -18,6 +17,7 @@ const getCountryData = async (country) => {
     return {
       officialName: data[0].name.official,
       countryCode: data[0].cca2,
+      flag: data[0].flags.png,
     };
   } catch (e) {
     console.log(e);

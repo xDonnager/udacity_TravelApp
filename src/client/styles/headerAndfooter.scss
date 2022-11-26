@@ -1,0 +1,23 @@
+@import "colors";
+
+header {
+  font-size: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: $darkGreen;
+
+  .headline {
+    margin: 0.5em auto;
+    color: $beige;
+  }
+}
+
+footer {
+  margin-top: 2.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

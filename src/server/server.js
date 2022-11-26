@@ -3,18 +3,15 @@ const express = require("express");
 const dotenv = require("dotenv").config();
 const path = require("path");
 const cors = require("cors");
-const fetch = require("node-fetch");
 
-const { getCountryData } = require("./api/countries");
-const { getCoordinates } = require("./api/geonames");
-const { getProjectedWeather } = require("./api/weatherbit");
-const { getImage } = require("./api/pixabay");
 const { createNewTrip } = require("./controllers/createNewTrip");
 
 // ****** Variables/ Middlewares ******
 // Setup empty JS object to act as endpoint for all routes
 const { SERVER_PORT } = process.env || 5000;
 console.log(__dirname);
+const tripsRepository = [];
+
 //setup express
 const app = express();
 app.use(express.static("dist"));
@@ -34,11 +31,6 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
-//read entries
-// app.get("/data", (req, res) => {
-//   res.send(projectData);
-// });
-
 //Add new entry
 // app.post("/add", (req, res) => {
 //   const { temperature, date, userResponse } = req.body;
@@ -49,15 +41,19 @@ app.get("/", (req, res) => {
 //   console.log("updated" + " " + JSON.stringify(projectData));
 // });
 
-app.post("/createNewTrip", async (req, res) => {
-  console.log(req.body);
-  try {
-    await createNewTrip(req.body);
+app.get("/savedTrips", async (req, res) => {
+  res.send(tripsRepository);
+});
 
-    res.status(200).json({ created: "OK" });
+app.post("/createNewTrip", async (req, res) => {
+  try {
+    const newTrip = await createNewTrip(req.body);
+    tripsRepository.push(newTrip);
+
+    res.status(200).json({ created: "yes" });
   } catch (e) {
     console.log(e);
-    return res.status(404).json({ created: "NOK" });
+    return res.status(404).json({ created: "nope" });
     //res.status(0).json({ error: { ...e } });
   }
 });

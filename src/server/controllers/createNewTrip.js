@@ -8,47 +8,34 @@ async function createNewTrip(newTripData) {
     const newTripParams = {
       city: newTripData.city,
       country: newTripData.country,
-      countryCode: "",
+      countryCode: null,
       startDate: newTripData.startDate,
       countdownTime: newTripData.countdownTime,
-      officialName: "",
+      officialName: null,
+      flag: null,
       lat: null,
       lng: null,
       weather: null,
+      images: null,
     };
 
     const countryData = await getCountryData(newTripParams.country);
-    // if (countryData === null) {
-    //   return res.status(404).json({ created: "NOK" });
-    // }
-    newTripParams.officialName = countryData.officialName;
-    newTripParams.countryCode = countryData.countryCode;
-
+    extractProps(countryData, newTripParams);
     console.log("----------tripParams!", newTripParams);
+
     const geolocalization = await getCoordinates(newTripParams);
-    console.log(geolocalization);
-    // if (geolocalization === null) {
-    //   return res.status(404).json({ created: "NOK" });
-    // }
-    newTripParams.lat = geolocalization.lat;
-    newTripParams.lng = geolocalization.lng;
+    extractProps(geolocalization, newTripParams);
     console.log("----------tripParams!", newTripParams);
 
     const expectedWeather = await getProjectedWeather(newTripParams);
-    console.log(expectedWeather);
-    // if (expectedWeather === null) {
-    //   return res.status(404).json({ created: "NOK" });
-    // }
     newTripParams.weather = expectedWeather;
     console.log("----------tripParams!", newTripParams);
 
     const images = await getImage(newTripParams);
-    console.log(images);
-    // if (images === null) {
-    //   return res.status(404).json({ created: "NOK" });
-    // }
     newTripParams.images = images;
     console.log("----------tripParams!", newTripParams);
+
+    return newTripParams;
   } catch (e) {
     console.log(e);
     throw e;
@@ -56,4 +43,9 @@ async function createNewTrip(newTripData) {
   }
 }
 
+function extractProps(origin, destiny) {
+  for (const prop in origin) {
+    destiny[prop] = origin[prop];
+  }
+}
 module.exports = { createNewTrip };

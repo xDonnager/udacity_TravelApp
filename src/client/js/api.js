@@ -17,7 +17,7 @@ export async function createNewTrip(tripData) {
 
     if (res.status === 200) {
       console.log(res);
-      return;
+      return res;
     } else {
       throw new Error("Failed to add new entry");
     }

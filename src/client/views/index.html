@@ -17,7 +17,7 @@
   </head>
   <body>
     <header>
-      <div class="holder headline">Planify</div>
+      <div class="headline"><h1>Planify</h1></div>
     </header>
     <div id="app">
       <section id="form">
@@ -41,7 +41,7 @@
         </div>
       </section>
 
-      <section class="countdown">
+      <section id="countdown">
         <div class="title">
           Leaving in
           <span id="daysLeft">...</span>
@@ -49,14 +49,53 @@
         </div>
       </section>
 
-      <div class="holder trips__list">
-        <div class="title">My Saved trips</div>
-        <div id="entryHolder">
-          <div id="date"></div>
-          <div id="temp"></div>
-          <div id="content"></div>
+      <section id ="saved">
+        <div class="title"><h2>My Saved trips</h2></div>
+        <hr>
+        <div id="trips">
+          <div class="card">
+            <img src="https://pixabay.com/get/g11faaf96e5b57a601c1f53d45e7e8142261eece03ab7215542b2c34f0e1ab9bd1f986e5b10f936f1c713f296b6816440_640.jpg" alt="img">
+            <div class="info">
+              <h3>Kingdom of Spain</h3>
+              <hr>
+              <p>Destination Barcelona, Spain</p>
+              <p>Planned for 12/12/2022, leaving in -1 days<p>
+              <div id="weather">Usually, in this period the weather is
+                <ul>
+                  <li>Average temperature: 11ºC</li>
+                  <li>Clouds: 37</li>
+                  <li>Rain: 0</li>
+                  <li>Snow: 0</li>
+                </ul>
+              </div>
+              
+            </div>
+          </div>
+          <div class="card">
+            <img src="https://pixabay.com/get/g11faaf96e5b57a601c1f53d45e7e8142261eece03ab7215542b2c34f0e1ab9bd1f986e5b10f936f1c713f296b6816440_640.jpg" alt="img">
+            <div class="info">
+              <div id="location">Destination Barcelona, Spain</div>
+              <div id="date">Planned for 12/12/2022</div>
+              <div id="weather">Usually, in this period the weather is</div>
+            </div>
+          </div>
+          <div class="card">
+            <img src="https://pixabay.com/get/g11faaf96e5b57a601c1f53d45e7e8142261eece03ab7215542b2c34f0e1ab9bd1f986e5b10f936f1c713f296b6816440_640.jpg" alt="img">
+            <div class="info">
+              <div id="location">Destination Barcelona, Spain</div>
+              <div id="date">Planned for 12/12/2022</div>
+              <div id="weather">Usually, in this period the weather is</div>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   </body>
+  <footer>
+    <p>Made with 🎔 - 2022 xDonnager</p>
+    <p>&copy Udacity</p>
+    <p>&copy Images from <a href="https://pixabay.com/">
+      Pixabay
+    </a</p>
+  </footer>
 </html>

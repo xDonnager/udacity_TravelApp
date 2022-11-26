@@ -11,23 +11,18 @@ const getProjectedWeather = async (req) => {
     lat: req.lat,
     lon: req.lng,
     key: process.env.WEATHERBIT_APIKEY,
-    days: 30,
     start_date: startDate.format("YYYY-MM-DD"),
     end_date: endDate.format("YYYY-MM-DD"),
   };
   console.log("reqParams", reqParams);
   const url = `http://api.weatherbit.io/v2.0/history/daily?`;
-  // const url = `http://api.weatherbit.io/v2.0/forecast/daily?`;
-  const postalCodeUrl = url + encodeParams(reqParams);
-  console.log("postalCodeUrl", postalCodeUrl);
+  const weatherUrl = url + encodeParams(reqParams);
   try {
-    const res = await fetch(postalCodeUrl);
-    console.log(res);
+    const res = await fetch(weatherUrl);
     if (res.status !== 200) {
       throw res.error;
     }
     const data = await res.json();
-    console.log(data);
     if (data.code === 0) {
       throw new Error("Weather for location was not found ");
     }

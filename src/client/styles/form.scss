@@ -1,9 +1,10 @@
-$white: #fff;
+@import "colors";
 $font-stack: "Playfair Display", sans-serif;
 $font-size: 16px;
 
 #form {
-  background: #404040;
+  background: $darkGrey;
+  padding: 2em;
   border-radius: 12px;
   color: $white;
   font-family: $font-stack;
@@ -58,6 +59,10 @@ $font-size: 16px;
       color: $white;
       font-family: $font-stack;
     }
+
+    ::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+    }
     label {
       display: block;
       font-size: 1.5rem;
@@ -69,7 +74,7 @@ $font-size: 16px;
     margin: 0 auto;
     width: 20rem;
     padding: 1rem 0;
-    background: #9ed2c6;
+    background: $green;
     border-radius: 12px;
     color: $white;
     font-size: 1.5rem;

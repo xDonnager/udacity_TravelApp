@@ -6,6 +6,8 @@ const getImage = async (req) => {
   const reqParams = {
     key: process.env.PIXABAY_APIKEY,
     q: req.city,
+    orientation: "horizontal",
+    per_page: 3,
   };
   const url = `https://pixabay.com/api/?`;
   const imagesUrl = url + encodeParams(reqParams);
@@ -15,7 +17,6 @@ const getImage = async (req) => {
       throw res.error;
     }
     const data = await res.json();
-    console.log(data);
     if (data.hits.length === 0) {
       throw new Error("Images where not found ");
     }

@@ -13,6 +13,11 @@ const calcCountdown = () => {
   return daysLeft;
 };
 
+/**
+ * On submit calculates trip data
+ * @param {*} e
+ */
+
 export async function generateButtonOnSubmitHandler(e) {
   e.preventDefault();
   //fillProgressBar(25)
@@ -25,6 +30,7 @@ export async function generateButtonOnSubmitHandler(e) {
   };
   try {
     const newTripCreated = await createNewTrip(tripInputValues);
+    console.log(newTripCreated);
     //fillProgressBar(25)
     //resetInputs();
   } catch (e) {}
