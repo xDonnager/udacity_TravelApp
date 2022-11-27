@@ -32,6 +32,8 @@ The user can delete the trips using built-in remove buttons in the trip cards.
 - `npm install`
   in order to install all the required dependencies and packages.
 
+**for submission purposes ONLY: rename the example.env file to .env**
+
 # Usage
 
 [(Back to top)](#table-of-contents)
