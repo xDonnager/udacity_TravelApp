@@ -81,7 +81,11 @@ export function createCardTrips(trips) {
       startDate,
       countdownTime,
     } = trip;
-    const { temp, clouds, precip, snow, windSpd } = trip.weather;
+    const { predicted, temp, clouds, precip, snow, windSpd } = trip.weather;
+    let predictedWeather;
+    predicted
+      ? (predictedWeather = `The weather predicted for the start date will be:`)
+      : (predictedWeather = `Based on historic data, the weather usually is: `);
     const card = document.createElement("div");
     card.classList.add("card");
     card.id = id;
@@ -100,7 +104,7 @@ export function createCardTrips(trips) {
         <p>Planned for <b>${
           startDate.split("T")[0]
         }</b>, leaving in <b>${countdownTime}</b> days.</p>
-        <p>Usually, in this period the weather is: </p>
+        <p>${predictedWeather}</p>
         <ul>
           <li>🌡️Average temperature: ${temp}ºC</li>
           <li>☁️Average cloud coverage: ${clouds}%</li>
