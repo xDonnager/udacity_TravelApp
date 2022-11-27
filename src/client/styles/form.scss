@@ -1,5 +1,6 @@
 @import "colors";
 $font-stack: "Playfair Display", sans-serif;
+$font-stack-simple: "Quicksand", sans-serif;
 $font-size: 16px;
 
 #form {
@@ -78,7 +79,7 @@ $font-size: 16px;
     border-radius: 12px;
     color: $white;
     font-size: 1.5rem;
-    font-family: $font-stack;
+    font-family: $font-stack-simple;
     border: none;
   }
 

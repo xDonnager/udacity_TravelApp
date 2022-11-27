@@ -9,7 +9,6 @@ const { createNewTrip } = require("./controllers/createNewTrip");
 // ****** Variables/ Middlewares ******
 // Setup empty JS object to act as endpoint for all routes
 const { SERVER_PORT } = process.env || 5000;
-console.log(__dirname);
 const tripsRepository = [];
 
 //setup express
@@ -21,28 +20,17 @@ app.use(express.json());
 // parses incoming requests with urlencoded payloads and is based on body-parser.
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/health-check", (req, res) => {
-  res.json({ status: "OK" });
+app.get("/health-check", async (req, res) => {
+  res.status(200).json({ status: "alive" });
 });
 
 //serve webapplication frontend
-app.get("/", (req, res) => {
-  console.log(req);
+app.get("/", async (req, res) => {
   res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
-//Add new entry
-// app.post("/add", (req, res) => {
-//   const { temperature, date, userResponse } = req.body;
-//   projectData.temperature = temperature;
-//   projectData.date = date;
-//   projectData.userResponse = userResponse;
-//   res.end();
-//   console.log("updated" + " " + JSON.stringify(projectData));
-// });
-
 app.get("/savedTrips", async (req, res) => {
-  res.send(tripsRepository);
+  res.status(200).send(tripsRepository);
 });
 
 app.post("/createNewTrip", async (req, res) => {
@@ -53,9 +41,19 @@ app.post("/createNewTrip", async (req, res) => {
     res.status(200).json({ created: "yes" });
   } catch (e) {
     console.log(e);
-    return res.status(404).json({ created: "nope" });
-    //res.status(0).json({ error: { ...e } });
+    return res.status(500).json({ error: e });
   }
+});
+
+app.post("/deleteTrip", async (req, res) => {
+  const tripToDelete = req.body.id.toString();
+  const positionFound = tripsRepository.findIndex(
+    (trip) => trip.id === tripToDelete
+  );
+  if (positionFound !== -1) {
+    tripsRepository.splice(positionFound, positionFound + 1);
+  }
+  res.status(200).json({ removed: "yes" });
 });
 
 app.listen(SERVER_PORT, () => {

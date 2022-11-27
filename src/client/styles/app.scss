@@ -8,6 +8,11 @@ body {
   font-size: $font-size;
 }
 
+b {
+  font-variant: petite-caps;
+  font-weight: bold;
+}
+
 #app {
   display: flex;
   overflow: hidden;
@@ -20,28 +25,61 @@ body {
   flex-direction: column;
 }
 
+.boutique {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  max-width: 100%;
+  justify-content: space-evenly;
+  #slider {
+    display: none;
+
+    img {
+      max-width: 100%;
+      height: 550px;
+      border-radius: 12px;
+    }
+  }
+}
+
+@media only screen and (min-width: 80em) {
+  .boutique {
+    #slider {
+      display: block;
+      max-width: 60%;
+    }
+  }
+}
+
 #countdown {
-  background: #54bab9;
+  .title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.5em;
+  }
+  #daysLeft {
+    border: 1px solid $blueGreen;
+    border-radius: 12px;
+    padding: 0.5em;
+    background: $blueGreen;
+    color: $beige;
+  }
 }
 
 .fill__bar {
-  background: #54bab9;
-  color: #fffff8;
+  background: $beige;
+  color: $beige;
   height: 24px;
   width: 0%;
 }
 
 .title {
   font-size: 1.8rem;
-  margin: 1rem;
 }
 
-.field__error {
-  color: #ba5491;
-  border: 2px solid #ba5491;
-}
-.zip__hint {
-  font-size: 1rem;
-  color: #ba5491;
-  display: none;
+.error {
+  text-align: center;
+  color: #ff8383;
 }

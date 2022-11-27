@@ -1,17 +1,15 @@
-import { isEmptyField } from "./validators";
+import { isEmptyField, calcCountdown } from "./utils";
 import * as HtmlElements from "./constants";
-import { createNewTrip } from "./api";
+import { createNewTrip, getCreatedTrips } from "./api";
+import {
+  fillProgressBar,
+  resetInputs,
+  resetProgressBar,
+  createCardTrips,
+  resetTrips,
+} from "./domVisuals";
 
 const { generateBtn, destination, city, date } = HtmlElements;
-
-const calcCountdown = () => {
-  const now = new Date().getTime();
-  const toDate = new Date(date.value).getTime();
-  const diff = toDate - now;
-  const daysLeft = Math.floor(diff / (1000 * 60 * 60 * 24));
-  document.getElementById("daysLeft").innerHTML = daysLeft;
-  return daysLeft;
-};
 
 /**
  * On submit calculates trip data
@@ -20,8 +18,7 @@ const calcCountdown = () => {
 
 export async function generateButtonOnSubmitHandler(e) {
   e.preventDefault();
-  //fillProgressBar(25)
-  console.log(city.value, destination.value, date.value);
+  fillProgressBar(25);
   const tripInputValues = {
     city: city.value.trim(),
     country: destination.value.trim(),
@@ -30,11 +27,28 @@ export async function generateButtonOnSubmitHandler(e) {
   };
   try {
     const newTripCreated = await createNewTrip(tripInputValues);
-    console.log(newTripCreated);
-    //fillProgressBar(25)
-    //resetInputs();
-  } catch (e) {}
+    fillProgressBar(25);
+    resetInputs();
+    fillProgressBar(25);
+    //get trips
+    await renderSavedTripsList();
+    fillProgressBar(25);
+    setTimeout(resetProgressBar, 3000);
+  } catch (e) {
+    console.log(e);
+  }
 }
+
+export const renderSavedTripsList = async () => {
+  try {
+    //get trips
+    resetTrips();
+    const createdTripsList = await getCreatedTrips();
+    createCardTrips(createdTripsList);
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 /**
  * checks input fields not empty, enables/disabled submit button
