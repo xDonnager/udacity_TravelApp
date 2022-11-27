@@ -1,5 +1,3 @@
-import { handleError } from "./domVisuals";
-
 const SERVER_PORT = process.env.SERVER_PORT || 5000;
 export async function createNewTrip(tripData) {
   const url = `http://localhost:${SERVER_PORT}/createNewTrip`;
@@ -19,7 +17,7 @@ export async function createNewTrip(tripData) {
       throw new Error("Failed to add new entry");
     }
   } catch (error) {
-    handleError(error);
+    return error;
   }
 }
 
@@ -35,7 +33,7 @@ export async function getCreatedTrips() {
       throw new Error("Failed to get trips");
     }
   } catch (e) {
-    handleError(e);
+    return error;
   }
 }
 
@@ -57,6 +55,6 @@ export async function removeTrip(id) {
       throw new Error("Failed to add new entry");
     }
   } catch (error) {
-    handleError(error);
+    return error;
   }
 }

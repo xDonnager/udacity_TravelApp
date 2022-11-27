@@ -4,9 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "",
+    "test": "jest --verbose",
     "dev": "webpack-dev-server  --config webpack.dev.js --open",
-    "start": "node src/server/server.js",
+    "start": "node src/server/server.js && start http://localhost:5000/",
     "build": "webpack --config webpack.prod.js"
   },
   "keywords": [],

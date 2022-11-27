@@ -44,6 +44,9 @@ export const renderSavedTripsList = async () => {
     //get trips
     resetTrips();
     const createdTripsList = await getCreatedTrips();
+    if (createdTripsList.length === 0) {
+      return;
+    }
     createCardTrips(createdTripsList);
   } catch (e) {
     console.log(e);
