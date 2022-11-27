@@ -28,9 +28,9 @@ module.exports = {
       filename: "./index.html",
     }),
     new MiniCssExtractPlugin({ filename: "[name].css" }),
-    // new WorkboxPlugin.GenerateSW({
-    //     swDest: './sw.js'
-    //   }),
+    new WorkboxPlugin.GenerateSW({
+      swDest: "./sw.js",
+    }),
   ],
   optimization: {
     minimizer: [new TerserPlugin({}), new OptimizeCSSAssetsPlugin({})],
